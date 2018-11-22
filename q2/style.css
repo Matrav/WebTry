@@ -1,0 +1,113 @@
+
+body {
+    background: black;
+    margin: 0px auto;
+    text-align: center;
+    color: black;
+    padding: 5% 0;
+}
+
+
+ 
+
+.endGameMessage {
+    font-size: 70px;
+}
+
+.winPage{
+  color: green;
+}
+
+.losePage{
+    color: red;
+}
+button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: white;
+    border-color: blue;
+    color: blue;
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+    width: 300px;
+    height: 220px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button:hover span {
+    padding-right: 25px;
+}
+
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+option[value=""][disabled] {
+    display: none;
+}
+
+form {
+    font-size: 22px;
+    margin-top: 20px;
+}
+
+img {
+    z-index: -1;
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin: -35px -25px -60px -35px;
+}
+
+.gamePage {
+    width: 50%;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 100px auto;
+    text-align: center;
+    color: black;
+    background: white;
+    border-style: solid;
+    border-color: darkorange;
+}
+
+#round {
+    margin: 0px auto;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    font-size: 35px;
+}
+
+#question {
+    margin: 0px auto;
+    text-align: center;
+    color: black;
+    font: italic; 
+}
+
+.info {
+    margin: 0px auto;
+    text-align: center;
+    color: black;
+}
