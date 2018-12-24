@@ -1,0 +1,115 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Chess Template</title>
+  <link rel="stylesheet" href="css/chessboard.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <audio>
+	<source src="sounds/move.mp3"></source>
+	<source src="sounds/yahoo.mp3"></source>
+  </audio>
+</head>
+<body>
+
+<script src="js/chess.js"></script>
+<div id="board"></div>
+<div id="result"></div>
+
+<script src="js/json3.min.js"></script>
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/chessboard.js"></script>
+<script>
+var position = 'start';
+var init = function() {
+
+var board,
+  game = new Chess(position === 'start' ? '' : position),
+  statusEl = $('#status');
+
+// do not pick up pieces if the game is over
+// only pick up pieces for the side to move
+var onDragStart = function(source, piece, position, orientation) {
+  if (game.game_over() === true ||
+      (game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+      (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+    return false;
+  }
+};
+
+var onDrop = function(source, target) {
+  // see if the move is legal
+  var move = game.move({
+    from: source,
+    to: target,
+    promotion: 'q' // NOTE: always promote to a queen for example simplicity
+  });
+
+  // illegal move
+  if (move === null) return 'snapback';
+
+  updateStatus();
+  
+  $("audio")[0].play();
+};
+
+// update the board position after the piece snap 
+// for castling, en passant, pawn promotion
+var onSnapEnd = function() {
+  board.position(game.fen());
+};
+
+var updateStatus = function() {
+  var status = '';
+
+  var moveColor = 'White';
+  if (game.turn() === 'b') {
+    moveColor = 'Black';
+  }
+
+  // checkmate?
+  if (game.in_checkmate() === true) {
+    status = 'Game over, ' + (moveColor === 'White' ? 'Black' : 'White') + ' won.';
+  }
+
+  // draw?
+  else if (game.in_draw() === true) {
+    status = 'Game over, drawn position';
+  }
+
+  // game still on
+  else {
+    status = moveColor + ' to move';
+
+    // check?
+    if (game.in_check() === true) {
+      status += ', ' + moveColor + ' is in check';
+    }
+  }
+
+  $("#result").html(status);
+  console.log(game.fen());
+  console.log(game.pgn());
+};
+
+var cfg = {
+  draggable: true,
+  position: position,
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onSnapEnd: onSnapEnd
+};
+board = ChessBoard('board', cfg);
+updateStatus();
+
+}; // end init()
+$(document).ready(init);
+
+position = 'rnbqkbnr/ppp2ppp/3p4/4p3/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3';
+init();
+
+</script>
+</body>
+</html>
